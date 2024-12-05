@@ -1,6 +1,11 @@
+import dotenv from "dotenv";
+dotenv.config({
+  path: "./.env",
+});
+
+import { corsOptions } from "./constants/config.js";
 import express from "express";
 import { connectDB } from "./utils/features.js";
-import dotenv from "dotenv";
 import { errorMiddleware } from "./middlewares/error.js";
 import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
@@ -23,12 +28,7 @@ import {
 } from "./constants/events.js";
 import { getSockets } from "./lib/helper.js";
 import { Message } from "./models/message.js";
-import { corsOptions } from "./constants/config.js";
 import { socketAuthenticator } from "./middlewares/auth.js";
-
-dotenv.config({
-  path: "./.env",
-});
 
 const mongoURI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
@@ -72,7 +72,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
-  res.send("Server is healthy");
+  res.status(200).json({ msg: "Server is healthy" });
 });
 
 app.use("/api/v1/user", UserRoute);
